@@ -38,7 +38,8 @@ class GeneralParameters extends Component {
 			visitaddr: '',
 			saveBtn: this.props.saveBtn
     },
-      this.handleChange = this.handleChange.bind(this);
+			this.handleChange = this.handleChange.bind(this);
+			this.init();
   }
 
  handleSubmit(event) {
@@ -47,6 +48,10 @@ class GeneralParameters extends Component {
 
 componentDidMount(){
 	dates('5c0e6656e60b5870745fb903', this);
+}
+
+init(){
+	console.log('INITTTTTTTTTT: ', this.props.saveBtn);	
 }
 
 sendDates () {

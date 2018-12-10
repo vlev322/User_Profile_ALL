@@ -21,9 +21,10 @@ class App extends Component {
 			})
 	}
 
-	btn(){
-		console.log('BTN');
-	}
+	// btn(){
+	// 	console.log('BTN');
+	// }
+
   render() {
     return (
       <Fragment>
@@ -38,7 +39,7 @@ class App extends Component {
         <div className={styles.content}>
           <GeneralParameters 
 						saveBtn={this.state.sendBtn}
-						test={this.btn()}
+						// test={this.btn()}
 					/>
           <Properties />
         </div>
