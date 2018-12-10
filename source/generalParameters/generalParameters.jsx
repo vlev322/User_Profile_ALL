@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios'
 
+import { store as PersonalSrore } from '../store/userInfo/contactInfo'
+
 import styles from './generalParameters.sass'
 
 import Feild from './feild/feild'
@@ -39,7 +41,6 @@ class GeneralParameters extends Component {
 			saveBtn: this.props.saveBtn
     },
 			this.handleChange = this.handleChange.bind(this);
-			this.init();
   }
 
  handleSubmit(event) {
@@ -48,10 +49,9 @@ class GeneralParameters extends Component {
 
 componentDidMount(){
 	dates('5c0e6656e60b5870745fb903', this);
-}
-
-init(){
-	console.log('INITTTTTTTTTT: ', this.props.saveBtn);	
+	PersonalSrore.subscribe(() => {
+		PersonalSrore.getState();
+	});
 }
 
 sendDates () {
@@ -72,10 +72,7 @@ handleChange(event) {
       [event.target.name]: event.target.value
     });
 }
-  render() {
-
-		console.log('Cliiiiiik:', this.state.saveBtn);
-		
+  render() {		
     return (
       <div className={styles.generalParameters}>
         <div className={styles.title}>

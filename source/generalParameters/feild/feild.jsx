@@ -21,7 +21,7 @@ const Feild = props => {
           placeholder={placeholder}
           name={name}
           value={value}
-          onChange={onChange}
+					onChange={onChange}
         />
       </div>
     );
