@@ -4,7 +4,7 @@ import styles from "../generalParameters.sass";
 export default class Field extends Component {
   constructor(props) {
 		super(props);
-		console.log(props.store.getState());
+	   //	console.log(props.store.getState(), "fields ----> ----> ----->");
 		this.state = props.store.getState();
 		this.unsubscribe = () => {};
 	}

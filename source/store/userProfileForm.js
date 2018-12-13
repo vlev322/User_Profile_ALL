@@ -40,19 +40,32 @@ const initialState = [
 ];
 
 const initStoreField = (initState, myForm) => {
-	console.log(myForm)
   const store = createStore((state = initState, action) => {
     const { type, ...newState } = action;
-    return type === "CHANGE_VALUE" || type === "TOOGLE_DISABLE"
-      ? {
+    switch (type) {
+      case 'CHANGE_VALUE': 
+        return {
           ...state,
           ...newState
         }
-      : {
+      case 'TOOGLE_DISABLE': 
+        return {
           ...state,
-          value: "",
-          readonly: true
-        };
+          ...newState
+        }
+        case 'GETTING_DATA': 
+        return {
+          ...state,
+          ...newState
+        }
+  
+    default: return {
+      ...state,
+      value: "",
+      readonly: true
+    }
+      break;
+  }
   });
 
   store.name = initState.name;
@@ -68,7 +81,15 @@ const initStoreField = (initState, myForm) => {
       type: "TOOGLE_DISABLE",
       readonly: !store.getState().readonly
     });
-	};
+  };
+
+  store.gettingData = (v) => {	
+    store.dispatch({
+      type: "GETTING_DATA",
+      value: v
+    });
+  };
+  
 	
 	myForm.subscribe(store.toogleDisable);
 
@@ -77,21 +98,23 @@ const initStoreField = (initState, myForm) => {
 
 const initStoreForm = () => {
   const store = createStore((state, action) => {
-    return action.type === "TOOGLE_EDITABLE"
-      ? {
-					editable: !state.editable
-        }
-      : {
-          editable: false
-        };
+    switch (action.type) {
+        case 'TOOGLE_EDITABLE': 
+          return {
+            editable: !state.editable
+          }
+      default: return {editable: false}
+    }
   });
-		let edit = false;
+
   store.toogleEditable = () => {		
-		edit = !edit;
     store.dispatch({
       type: "TOOGLE_EDITABLE"
     });
   };
+
+
+
   return store;
 };
 
@@ -108,8 +131,9 @@ export const formPersonal = {
 };
 
 const s2 = initStoreForm();
+
 export const formContact = {
-	store: s2,
+  store: s2,
   field: [
 		initStoreField(initialState[4], s2),
 		initStoreField(initialState[5], s2)

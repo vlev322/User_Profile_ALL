@@ -21,7 +21,7 @@ class Title extends Component {
 		this.unsubscribe();
 	}
 	render(){		
-		console.log(this.props.store);
+	//	console.log(this.props.store);
 		
     return (
       <div className={styles.subTitle}>
