@@ -54,6 +54,25 @@ const dates = (userId, self) => {
     });
 };
 
+const get_Data = () => {
+	let dataList = document.getElementById('json-datalist');
+	axios
+	.get(`http://192.168.10.3:3000/api/v1/user/5c0fbccf463e5e37b4a279c4`)
+	.then(function(response) {
+		const roles = response.data.roles;
+			roles.forEach(function(item) {
+				// Создаем новый элемент <option>.
+			let option = document.createElement('option');
+				// Устанавливаем значение, используя элементы массива JSON.
+			option.value = item;
+				// Добавляем элемент <option> к <datalist>.
+			dataList.appendChild(option);
+			});	
+	})
+	.catch(function(error) {
+		console.log(error); 
+	});
+}
 class GeneralParameters extends Component {
   constructor(props) {
     super(props);
@@ -110,7 +129,8 @@ changeUserInfo("edit", this);
 
 
   componentDidMount() {
-    dates("5c0fbccf463e5e37b4a279c4", this);    
+		dates("5c0fbccf463e5e37b4a279c4", this);    
+		get_Data();
   }
 
   handleChange(event) {
@@ -167,7 +187,12 @@ changeUserInfo("edit", this);
             <div>
               <div className={styles.roles}>
                 <span>Roles</span>
-                <div />
+								<div>
+								<input type="text" id="ajax" list='json-datalist' placeholder="Select role"/>
+									<datalist id="json-datalist">
+									
+									</datalist>
+								</div>
               </div>
               <div className={styles.group}>
                 <span>Group</span>
