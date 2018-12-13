@@ -1,37 +1,40 @@
 import React, { Component, Fragment } from "react";
 import axios from "axios";
 
-import { formPersonal, formContact, editStoreContactForm } from "./../store/userProfileForm";
+import {
+  formPersonal,
+  formContact,
+  editStoreContactForm
+} from "./../store/userProfileForm";
+import { store } from "../store/userInfo/settingInfo";
 
 import styles from "./generalParameters.sass";
 
 import Field from "./field/field";
 import Title from "./title/title";
 
-// if edit user or new user // reraite
-
-const clear= (state) =>{
-    state.setState({
-        username:   '',
-        firstname:  '',
-        secondname: '',
-        password:   '',
-        email:      '',
-        phone:      '',
-        visitaddr:  ''
-    })
-}
-const changeUserInfo = ( usersEdit,  self) => {
-      if(usersEdit==="create") clear();
-      else if(usersEdit==="edit") {
-        formPersonal.field[0].gettingData(self.state.username)
-        formPersonal.field[1].gettingData(self.state.firstname)
-        formPersonal.field[2].gettingData(self.state.secondname)
-        formPersonal.field[3].gettingData(self.state.password)
-        formContact.field[0].gettingData(self.state.email)
-        formContact.field[1].gettingData(self.state.phone)
-    }
-}
+const clear = state => {
+  state.setState({
+    username: "",
+    firstname: "",
+    secondname: "",
+    password: "",
+    email: "",
+    phone: "",
+    visitaddr: ""
+  });
+};
+const changeUserInfo = (usersEdit, self) => {
+  if (usersEdit === "create") clear();
+  else if (usersEdit === "edit") {
+    formPersonal.field[0].gettingData(self.state.username);
+    formPersonal.field[1].gettingData(self.state.firstname);
+    formPersonal.field[2].gettingData(self.state.secondname);
+    formPersonal.field[3].gettingData(self.state.password);
+    formContact.field[0].gettingData(self.state.email);
+    formContact.field[1].gettingData(self.state.phone);
+  }
+};
 
 const dates = (userId, self) => {
   axios
@@ -39,44 +42,43 @@ const dates = (userId, self) => {
     .then(function(response) {
       const user = response.data;
       self.setState({
-        username:   user.userName,
-        firstname:  user.firstName,
+        username: user.userName,
+        firstname: user.firstName,
         secondname: user.lastName,
-        password:   user.password,
-        email:      user.email,
-        phone:      user.telephone,
-        visitaddr:  user.visitingAdress
+        password: user.password,
+        email: user.email,
+        phone: user.telephone,
+        visitaddr: user.visitingAdress
       });
-
     })
     .catch(function(error) {
-      console.log(error); 
+      console.log(error);
     });
 };
 
 const get_Data = () => {
-	let dataList = document.getElementById('json-datalist');
-	axios
-	.get(`http://192.168.10.3:3000/api/v1/user/5c0fbccf463e5e37b4a279c4`)
-	.then(function(response) {
-		const roles = response.data.roles;
-			roles.forEach(function(item) {
-				// Создаем новый элемент <option>.
-			let option = document.createElement('option');
-				// Устанавливаем значение, используя элементы массива JSON.
-			option.value = item;
-				// Добавляем элемент <option> к <datalist>.
-			dataList.appendChild(option);
-			});	
-	})
-	.catch(function(error) {
-		console.log(error); 
-	});
-}
+  let dataList = document.getElementById("json-datalist");
+  axios
+    .get(`http://192.168.10.3:3000/api/v1/user/5c0fbccf463e5e37b4a279c4`)
+    .then(function(response) {
+      const roles = response.data.roles;
+      roles.forEach(function(item) {
+        // Создаем новый элемент <option>.
+        let option = document.createElement("option");
+        // Устанавливаем значение, используя элементы массива JSON.
+        option.value = item;
+        // Добавляем элемент <option> к <datalist>.
+        dataList.appendChild(option);
+      });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 class GeneralParameters extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    (this.state = {
       username: "",
       firstname: "",
       secondname: "",
@@ -85,52 +87,61 @@ class GeneralParameters extends Component {
       phone: "",
       visitaddr: "",
       saveBtn: this.props.saveBtn
-    },
+    }),
       (this.handleChange = this.handleChange.bind(this)),
-      (this.saveChanges = this.saveChanges.bind(this))
+      (this.saveChanges = this.saveChanges.bind(this));
   }
 
   handleSubmit(event) {
     event.preventDefault();
   }
 
-  saveChanges(){
+  saveChanges() {
     const user = {};
-    let saveData = () =>{
-        return new Promise(function(resolve, reject) {
-          formPersonal.field.map(elem => {
-            user[elem.name] = elem.getState().value;
-          })
-          formContact.field.map(elem => {
-            user[elem.name] = elem.getState().value;
-          })
-        resolve('success');
+    let saveData = () => {
+      return new Promise(function(resolve, reject) {
+        formPersonal.field.map(elem => {
+          user[elem.name] = elem.getState().value;
         });
-    }
-saveData().then(function(response) {
-changeUserInfo("edit", this);
-    axios
-      .put(` http://192.168.10.3:3000/api/v1/user/5c0fbccf463e5e37b4a279c4`, {
-        _id: "5c0fbccf463e5e37b4a279c4",
-        login: user.username,
-        firstname: user.firstName,
-        secondname: user.lastName,
-        password: user.password,
-        email: user.email,
-        phone: user.telephone,
-        visitaddr: user.visitingAdress
-      })
-      .catch(function(error) {
-        console.log(error);
-    });
-}.bind(this))
+        formContact.field.map(elem => {
+          user[elem.name] = elem.getState().value;
+        });
+        resolve("success");
+      });
+    };
 
-};
-
-
+    saveData().then(
+      function(response) {
+        console.log("Function working....", user);
+        axios
+          .put(
+            ` http://192.168.10.3:3000/api/v1/user/5c0fbccf463e5e37b4a279c4`,
+            {
+              _id: "5c0fbccf463e5e37b4a279c4",
+              userName: user.username,
+              firstName: user.firstname,
+              lastName: user.secondname,
+              password: user.password,
+              email: user.email,
+              telephone: user.phone,
+              visitingAdress: user.visitingAdress
+            }
+          )
+          .catch(function(error) {
+            console.log(error);
+          });
+      }.bind(this)
+    );
+  }
   componentDidMount() {
-		dates("5c0fbccf463e5e37b4a279c4", this);    
-		get_Data();
+    dates("5c0fbccf463e5e37b4a279c4", this);
+    get_Data();
+    store.unsubscribe = store.subscribe(() => {
+      this.saveChanges();
+    });
+  }
+  componentWillUnmount() {
+    store.unsubscribe();
   }
 
   handleChange(event) {
@@ -146,9 +157,6 @@ changeUserInfo("edit", this);
           <span>Secure Connection</span>
         </div>
         <div className={styles.personal}>
-
-				<button onClick={this.saveChanges}>SEND PUT</button>
-
           <Title store={formPersonal.store} title="Personal Information" />
           <div className={styles.names}>
             <img src="https://randomuser.me/api/portraits/men/46.jpg" />
@@ -187,12 +195,15 @@ changeUserInfo("edit", this);
             <div>
               <div className={styles.roles}>
                 <span>Roles</span>
-								<div>
-								<input type="text" id="ajax" list='json-datalist' placeholder="Select role"/>
-									<datalist id="json-datalist">
-									
-									</datalist>
-								</div>
+                <div>
+                  <input
+                    type="text"
+                    id="ajax"
+                    list="json-datalist"
+                    placeholder="Select role"
+                  />
+                  <datalist id="json-datalist" />
+                </div>
               </div>
               <div className={styles.group}>
                 <span>Group</span>

@@ -2,6 +2,13 @@ import React from 'react';
 
 import styles from './header.sass';
 
+import { store } from "../store/userInfo/settingInfo";
+
+const sendAndClose = () => {
+	store.save();
+	store.saveAndClose();
+}
+
 const Header = props => {
     const {nickname, age, name, role, location, click} = props;
     return (
@@ -15,8 +22,8 @@ const Header = props => {
 					</div>
 					<div className={styles.header_r}>
 						<span>Reset</span>
-						<button onClick={click} className={`${styles.btn} ${styles.btn_green}`}>Save Changes</button>
-						<button className={`${styles.btn} ${styles.btn_green}`}>Save & Close</button>
+						<button onClick={store.save} className={`${styles.btn} ${styles.btn_green}`}>Save Changes</button>
+						<button onClick={sendAndClose} className={`${styles.btn} ${styles.btn_green}`}>Save & Close</button>
 					</div>
         </div>
 )};
