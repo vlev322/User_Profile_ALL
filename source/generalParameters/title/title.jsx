@@ -1,13 +1,19 @@
 import React, { Component, Fragment } from 'react';
+//Our styles
 import styles from '../generalParameters.sass'
-
-
-
+//Our stores
+import { btnEditStore } from "../../store/userInfo/btnEditStore";
 class Title extends Component {
 	constructor(props) {
 		super(props);
-		this.state = props.store.getState()
-		this.unsubscribe = () => {};
+		(this.state = props.store.getState()),
+		this.unsubscribe = () => {},
+		(this.showBtn = this.showBtn.bind(this))
+	}
+
+	showBtn(){
+		btnEditStore.btnEdit();
+		this.props.store.toogleEditable()		
 	}
 	
 	componentDidMount() {
@@ -26,7 +32,7 @@ class Title extends Component {
     return (
       <div className={styles.subTitle}>
         <h3>{this.props.title}</h3>
-        <div><a onClick={this.props.store.toogleEditable} href="#">{this.state.editable ? `Save` : `Edit`}</a></div>
+        <div><a onClick={this.showBtn} href="#">{this.state.editable ? `` : `Edit`}</a></div>
     </div>
     );
 	}

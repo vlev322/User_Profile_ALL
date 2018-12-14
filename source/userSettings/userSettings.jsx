@@ -5,6 +5,7 @@ import axios from "axios";
 import styles from "./UserSettings.sass";
 
 import UserSettingsList from "./userSettingsList/userSettingsList";
+import SectionBtn from "./sectionBtn/sectionBtn";
 
 import { store } from "../store/userInfo/settingInfo";
 
@@ -41,19 +42,33 @@ class UserSettings extends Component {
 
     return userList.length ? (
       <div className={styles.userSettings}>
-        <button onClick={this.testClick}>Edit multiply User</button>
-        <button onClick={store.createUser}>+Create User</button>
-        <UserSettingsList
-          user={userList}
-          nickname="User XXX"
-          name="Tom Toizer"
-          status="Active"
-          role="Content Manager"
-          location="Vilnus Airport"
-          lastLogin="2018-12-31 17:30:36"
-        />
+				<SectionBtn/>
+				<div className={styles.userSettingList}>
+					<UserSettingsList
+						user={userList}
+						nickname="User XXX"
+						name="Tom Toizer"
+						status="Active"
+						role="Content Manager"
+						location="Vilnus Airport"
+						lastLogin="2018-12-31 17:30:36"
+					/>				
+				</div>
       </div>
-    ) : null;
+    ) : <div className={styles.userSettings}>
+		<SectionBtn/>
+		<div className={styles.userSettingList}>
+			<UserSettingsList
+				user={userList}
+				nickname="User XXX"
+				name="Tom Toizer"
+				status="Active"
+				role="Content Manager"
+				location="Vilnus Airport"
+				lastLogin="2018-12-31 17:30:36"
+			/>				
+		</div>
+	</div>;
   }
 }
 

@@ -26,6 +26,7 @@ const UserSettingsList = props => {
 							user.map((item)=>(
 								<UserSettingsListItem
 									key={item._id}
+									id={item._id}
 									nickname={item.userName}
 									firstName={item.firstName}
 									lastName={item.lastName}

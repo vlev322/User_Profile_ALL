@@ -9,13 +9,15 @@ import UserSettings from "./userSettings/userSettings";
 
 import { store } from "./store/userInfo/settingInfo";
 
+import { userStore } from "./store/userInfo/storeUser";
+
 
 class App extends Component {
     constructor(props) {
       super(props);
       this.state = {
 				manageSettingsBlock: 'userList',
-				pageName: "userList",
+				pageName: store.getState(),
 				editMultiplyUser: false
     }
 	}
@@ -53,16 +55,20 @@ class App extends Component {
 				pageName: store.getState()
 			});
 		});
+		userStore.unsubscribe = userStore.subscribe(()=>{
+			store.editUser()	
+		})
 	}
 	
   componentWillUnmount() {
 		store.unsubscribe()
+		userStore.unsubscribe()
   }
 
-  render() {
+  render() {		
     return (
       <Fragment>
-        {this.changePage(this.state.pageName)}
+       	{this.changePage(this.state.pageName.pageName)}
       </Fragment>
     );
   }

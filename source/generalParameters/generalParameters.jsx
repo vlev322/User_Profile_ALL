@@ -1,15 +1,14 @@
 import React, { Component, Fragment } from "react";
+
 import axios from "axios";
 
-import {
-  formPersonal,
-  formContact,
-  editStoreContactForm
-} from "./../store/userProfileForm";
+//Our stores
+import {formPersonal,formContact} from "./../store/userProfileForm";
 import { store } from "../store/userInfo/settingInfo";
-
+import { userStore } from "../store/userInfo/storeUser";
+//Our styles
 import styles from "./generalParameters.sass";
-
+//Our components
 import Field from "./field/field";
 import Title from "./title/title";
 
@@ -50,10 +49,13 @@ const dates = (userId, self) => {
         phone: user.telephone,
         visitaddr: user.visitingAdress
       });
-    })
+    }).then(()=>{
+			changeUserInfo('edit', self);
+		})
     .catch(function(error) {
       console.log(error);
-    });
+		});
+		
 };
 
 const get_Data = () => {
@@ -112,7 +114,6 @@ class GeneralParameters extends Component {
 
     saveData().then(
       function(response) {
-        console.log("Function working....", user);
         axios
           .put(
             ` http://192.168.10.3:3000/api/v1/user/5c0fbccf463e5e37b4a279c4`,
@@ -134,14 +135,21 @@ class GeneralParameters extends Component {
     );
   }
   componentDidMount() {
-    dates("5c0fbccf463e5e37b4a279c4", this);
-    get_Data();
+    dates(userStore.getState().user, this);
+		get_Data();
+		
     store.unsubscribe = store.subscribe(() => {
-      this.saveChanges();
-    });
-  }
+			this.saveChanges();				
+		});
+
+		userStore.unsubscribe = userStore.subscribe(()=>{
+			changeUserInfo('edit', this);
+		})
+	}
+	
   componentWillUnmount() {
-    store.unsubscribe();
+		store.unsubscribe()
+		userStore.unsubscribe();		
   }
 
   handleChange(event) {
