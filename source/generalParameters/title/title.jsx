@@ -32,7 +32,7 @@ class Title extends Component {
     return (
       <div className={styles.subTitle}>
         <h3>{this.props.title}</h3>
-        <div><a onClick={this.showBtn} href="#">{this.state.editable ? `` : `Edit`}</a></div>
+        <div><a onClick={this.showBtn} >{this.state.editable ? `` : `Edit`}</a></div>
     </div>
     );
 	}
