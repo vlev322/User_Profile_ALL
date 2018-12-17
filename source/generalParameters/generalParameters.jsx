@@ -198,7 +198,7 @@ class GeneralParameters extends Component {
         </div>
 
         <div>
-          <Title store={formPersonal.store} title="Setting Information" />
+          <Title store={formContact.store} title="Setting Information" />
           <div className={styles.settingInformation}>
             <div>
               <div className={styles.roles}>

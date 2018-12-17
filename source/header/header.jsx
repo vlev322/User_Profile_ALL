@@ -4,10 +4,20 @@ import styles from './header.sass';
 //Our stores
 import { store } from "../store/userInfo/settingInfo";
 import { btnEditStore } from "../store/userInfo/btnEditStore";
+import  { formPersonal,formContact }  from "../store/userProfileForm";
+
 
 const sendAndClose = () => {
 	store.save();
 	store.back();
+	formPersonal.store.toogleEditable()
+	formContact.store.toogleEditable()
+}
+const onlySave = () => {
+	store.save();
+	formPersonal.store.toogleEditable()
+	formContact.store.toogleEditable()
+	btnEditStore.btnEditShow()
 }
 
 class Header extends Component {
@@ -22,10 +32,9 @@ class Header extends Component {
 		let btns = 
 			<div className={styles.header_r}>
 				<span>Reset</span>
-				<button onClick={store.save} className={`${styles.btn} ${styles.btn_green}`}>Save Changes</button>
+				<button onClick={onlySave} className={`${styles.btn} ${styles.btn_green}`}>Save Changes</button>
 				<button onClick={sendAndClose} className={`${styles.btn} ${styles.btn_green}`}>Save & Close</button>
 			</div>;
-
 		return state ? btns : null;
 	}
 	componentDidMount() {
@@ -40,7 +49,7 @@ class Header extends Component {
 		btnEditStore.unsubscribe()
 	}
 	
-    render (){			
+    render (){					
 			return(
         <div className={styles.header}>
 					<div className={styles.header_l}>

@@ -27,12 +27,10 @@ class Title extends Component {
 		this.unsubscribe();
 	}
 	render(){		
-	//	console.log(this.props.store);
-		
     return (
       <div className={styles.subTitle}>
         <h3>{this.props.title}</h3>
-        <div><a onClick={this.showBtn} href="#">{this.state.editable ? `` : `Edit`}</a></div>
+        <div><a onClick={this.showBtn}>{this.state.editable ? `Save` : `Edit`}</a></div>
     </div>
     );
 	}

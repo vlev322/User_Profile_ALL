@@ -89,7 +89,6 @@ const initStoreField = (initState, myForm) => {
       value: v
     });
   };
-  
 	
 	myForm.subscribe(store.toogleDisable);
 
@@ -112,9 +111,6 @@ const initStoreForm = () => {
       type: "TOOGLE_EDITABLE"
     });
   };
-
-
-
   return store;
 };
 

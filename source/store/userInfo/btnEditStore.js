@@ -12,6 +12,11 @@ export const btnEditStore = createStore((state = initialState, action) => {
 					...state,
 					edit : action.edit
 				};						
+			case 'BTN_EDIT_USER_SHOW':			
+			return {
+					...state,
+					edit : action.edit
+				};						
 		}
 		return state;
 	});
@@ -21,5 +26,11 @@ export const btnEditStore = createStore((state = initialState, action) => {
 		btnEditStore.dispatch({
 			type: 'BTN_EDIT_USER',
 			edit: true
+		})
+	}
+	btnEditStore.btnEditShow = () => {		
+		btnEditStore.dispatch({
+			type: 'BTN_EDIT_USER_SHOW',
+			edit: false
 		})
 	}
