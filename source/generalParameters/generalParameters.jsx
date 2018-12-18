@@ -19,6 +19,9 @@ const rolesListItem = (role) =>(
 		<p>{role}</p>
 		<div></div>
 	</div>);
+	//------Сделать это по нормальному
+	//------Делаем переменную в которую поместим массив с ролями
+	let respRoles = {}
 //------------------------------------
 
 const clear = state => {
@@ -67,31 +70,6 @@ const dates = (userId, self) => {
     });
 };
 
-const get_Data = () => {
-  let dataList = document.getElementById("dropdownList");
-  axios
-    .get(`http://185.233.117.46/api/v1/user/5c191f5ba3eeef7ca2a1a5a7`)
-    .then(function(response) {
-			console.log('Our roles: ', response.data);
-
-			const roles = response.data.roles;
-
-      roles.forEach(function(item) {
-				// Создаем новый элемент <option>.
-				
-        let option = document.createElement("p");
-        // // Устанавливаем значение, используя элементы массива JSON.
-        option.innerHTML = item;
-        // // Добавляем элемент <option> к <datalist>.
-        dataList.appendChild(option);
-      });
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-};
-
-
 class GeneralParameters extends Component {
   constructor(props) {
     super(props);
@@ -103,7 +81,9 @@ class GeneralParameters extends Component {
       email: "",
       phone: "",
       visitaddr: "",
-      saveBtn: this.props.saveBtn
+			saveBtn: this.props.saveBtn,
+			rolesList: []
+			
     }),
       (this.handleChange = this.handleChange.bind(this)),
       (this.saveChanges = this.saveChanges.bind(this));
@@ -113,6 +93,20 @@ class GeneralParameters extends Component {
     event.preventDefault();
   }
 
+//---Получаем наши роли с сервера и передаем их в переменную состояния rolesList
+	get_Data (){
+		  axios
+		    .get(`http://185.233.117.46/api/v1/user/5c191f5ba3eeef7ca2a1a5a7`)
+		    .then(function(response) {
+					this.setState({
+						rolesList: response.data.roles
+					})
+				}.bind(this))				
+		    .catch(function(error) {
+		      console.log(error);
+		    });
+		};
+	
   saveChanges() {
     const user = {};
     let saveData = () => {
@@ -151,8 +145,8 @@ class GeneralParameters extends Component {
   }
   componentDidMount() {
     dates(userStore.getState().user, this);
-    get_Data();
-
+		this.get_Data();
+		
     store.unsubscribe = store.subscribe(() => {
       this.saveChanges();
     });
@@ -173,6 +167,7 @@ class GeneralParameters extends Component {
     });
   }
   render() {
+
     return (
       <div className={styles.generalParameters}>
         <div className={styles.title}>
@@ -219,22 +214,8 @@ class GeneralParameters extends Component {
               <div className={styles.roles}>
                 <span className={styles.subTitle}>Roles</span>
                 <div>
-                  {/* <input
-                    type="text"
-                    id="ajax"
-                    list="json-datalist"
-                    placeholder="Select role"
-                  />
-                  <datalist id="json-datalist">
-										<option value="First"></option>
-										<option value="Second"></option>
-										<option value="Third"></option>
-									</datalist> */}
-
                   <section className={styles.rolesItem}>
                     <i>&#10006; </i><span>Vilnius Airport</span>
-                    <i>&#10006; </i><span>Content Manager</span>
-                    <i>&#10006; </i><span>Content Manager</span>
                     <i>&#10006; </i><span>Content Manager</span>
                   </section>
 									<input
@@ -244,7 +225,14 @@ class GeneralParameters extends Component {
                     placeholder="Select role"
                   />
 									<div id="dropdownList" className={styles.dropdownList}>
-			
+								{
+										this.state.rolesList.map((item)=>(
+										<div className={styles.dropdownList_item}>
+											<p>{item}</p>
+											<div></div>
+										</div>
+										))
+									}
 									</div>
                 </div>
               </div>
