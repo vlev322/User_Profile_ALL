@@ -19,12 +19,12 @@ class UserSettings extends Component {
   }
 
   componentDidMount() {
-		this.dates("5c0fbccf463e5e37b4a279c4", this);		
+		this.dates("5c0a74613f088940a864da13", this);		
 }
 
   dates() {
 		axios
-			.get(`http://192.168.10.3:3000/api/v1/user/`)
+			.get(`http://185.233.117.46/api/v1/user/`)
 			.then(
 				function(response) {
 					this.setState({

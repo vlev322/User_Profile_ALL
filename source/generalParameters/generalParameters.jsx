@@ -3,7 +3,7 @@ import React, { Component, Fragment } from "react";
 import axios from "axios";
 
 //Our stores
-import {formPersonal,formContact} from "./../store/userProfileForm";
+import { formPersonal, formContact } from "./../store/userProfileForm";
 import { store } from "../store/userInfo/settingInfo";
 import { userStore } from "../store/userInfo/storeUser";
 //Our styles
@@ -11,6 +11,15 @@ import styles from "./generalParameters.sass";
 //Our components
 import Field from "./field/field";
 import Title from "./title/title";
+
+//------------------------------------
+//----Вынести в отдельній файл
+const rolesListItem = (role) =>(
+	<div className={styles.dropdownList_item}>
+		<p>{role}</p>
+		<div></div>
+	</div>);
+//------------------------------------
 
 const clear = state => {
   state.setState({
@@ -37,7 +46,7 @@ const changeUserInfo = (usersEdit, self) => {
 
 const dates = (userId, self) => {
   axios
-    .get(`http://192.168.10.3:3000/api/v1/user/${userId}`)
+    .get(`http://185.233.117.46/api/v1/user/${userId}`)
     .then(function(response) {
       const user = response.data;
       self.setState({
@@ -49,27 +58,31 @@ const dates = (userId, self) => {
         phone: user.telephone,
         visitaddr: user.visitingAdress
       });
-    }).then(()=>{
-			changeUserInfo('edit', self);
-		})
+    })
+    .then(() => {
+      changeUserInfo("edit", self);
+    })
     .catch(function(error) {
       console.log(error);
-		});
-		
+    });
 };
 
 const get_Data = () => {
-  let dataList = document.getElementById("json-datalist");
+  let dataList = document.getElementById("dropdownList");
   axios
-    .get(`http://192.168.10.3:3000/api/v1/user/5c0fbccf463e5e37b4a279c4`)
+    .get(`http://185.233.117.46/api/v1/user/5c191f5ba3eeef7ca2a1a5a7`)
     .then(function(response) {
-      const roles = response.data.roles;
+			console.log('Our roles: ', response.data);
+
+			const roles = response.data.roles;
+
       roles.forEach(function(item) {
-        // Создаем новый элемент <option>.
-        let option = document.createElement("option");
-        // Устанавливаем значение, используя элементы массива JSON.
-        option.value = item;
-        // Добавляем элемент <option> к <datalist>.
+				// Создаем новый элемент <option>.
+				
+        let option = document.createElement("p");
+        // // Устанавливаем значение, используя элементы массива JSON.
+        option.innerHTML = item;
+        // // Добавляем элемент <option> к <datalist>.
         dataList.appendChild(option);
       });
     })
@@ -77,6 +90,8 @@ const get_Data = () => {
       console.log(error);
     });
 };
+
+
 class GeneralParameters extends Component {
   constructor(props) {
     super(props);
@@ -116,9 +131,9 @@ class GeneralParameters extends Component {
       function(response) {
         axios
           .put(
-            ` http://192.168.10.3:3000/api/v1/user/5c0fbccf463e5e37b4a279c4`,
+            ` http://185.233.117.46/api/v1/user/5c1915572d048c48db8cbd64`,
             {
-              _id: "5c0fbccf463e5e37b4a279c4",
+              _id: "5c1915572d048c48db8cbd64",
               userName: user.username,
               firstName: user.firstname,
               lastName: user.secondname,
@@ -136,20 +151,20 @@ class GeneralParameters extends Component {
   }
   componentDidMount() {
     dates(userStore.getState().user, this);
-		get_Data();
-		
-    store.unsubscribe = store.subscribe(() => {
-			this.saveChanges();				
-		});
+    get_Data();
 
-		userStore.unsubscribe = userStore.subscribe(()=>{
-			changeUserInfo('edit', this);
-		})
-	}
-	
+    store.unsubscribe = store.subscribe(() => {
+      this.saveChanges();
+    });
+
+    userStore.unsubscribe = userStore.subscribe(() => {
+      changeUserInfo("edit", this);
+    });
+  }
+
   componentWillUnmount() {
-		store.unsubscribe()
-		userStore.unsubscribe();		
+    store.unsubscribe();
+    userStore.unsubscribe();
   }
 
   handleChange(event) {
@@ -202,19 +217,39 @@ class GeneralParameters extends Component {
           <div className={styles.settingInformation}>
             <div>
               <div className={styles.roles}>
-                <span>Roles</span>
+                <span className={styles.subTitle}>Roles</span>
                 <div>
-                  <input
+                  {/* <input
                     type="text"
                     id="ajax"
                     list="json-datalist"
                     placeholder="Select role"
                   />
-                  <datalist id="json-datalist" />
+                  <datalist id="json-datalist">
+										<option value="First"></option>
+										<option value="Second"></option>
+										<option value="Third"></option>
+									</datalist> */}
+
+                  <section className={styles.rolesItem}>
+                    <i>&#10006; </i><span>Vilnius Airport</span>
+                    <i>&#10006; </i><span>Content Manager</span>
+                    <i>&#10006; </i><span>Content Manager</span>
+                    <i>&#10006; </i><span>Content Manager</span>
+                  </section>
+									<input
+                    type="text"
+										id="inputRoles"
+										className={styles.inputRoles}
+                    placeholder="Select role"
+                  />
+									<div id="dropdownList" className={styles.dropdownList}>
+			
+									</div>
                 </div>
               </div>
               <div className={styles.group}>
-                <span>Group</span>
+                <span className={styles.subTitle}>Group</span>
                 <div />
               </div>
             </div>
