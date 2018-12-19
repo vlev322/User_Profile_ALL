@@ -5,27 +5,17 @@ import axios from "axios";
 //Our stores
 import { formPersonal, formContact } from "./../store/userProfileForm";
 import { store } from "../store/userInfo/settingInfo";
+import { createUserStore } from "../store/userInfo/createUserStore";
 import { userStore } from "../store/userInfo/storeUser";
+import { displayListRoles, store as dispListRolStore, hide } from "../store/userInfo/dropdownStore";
 //Our styles
 import styles from "./generalParameters.sass";
 //Our components
 import Field from "./field/field";
 import Title from "./title/title";
 
-//------------------------------------
-//----Вынести в отдельній файл
-const rolesListItem = (role) =>(
-	<div className={styles.dropdownList_item}>
-		<p>{role}</p>
-		<div></div>
-	</div>);
-	//------Сделать это по нормальному
-	//------Делаем переменную в которую поместим массив с ролями
-	let respRoles = {}
-//------------------------------------
-
-const clear = state => {
-  state.setState({
+const clear = self => {
+  self.setState({
     username: "",
     firstname: "",
     secondname: "",
@@ -33,11 +23,13 @@ const clear = state => {
     email: "",
     phone: "",
     visitaddr: ""
-  });
+	});
+	
 };
 const changeUserInfo = (usersEdit, self) => {
-  if (usersEdit === "create") clear();
-  else if (usersEdit === "edit") {
+  if (usersEdit === "create") {
+		clear(self)		
+	}else if (usersEdit === "edit") {
     formPersonal.field[0].gettingData(self.state.username);
     formPersonal.field[1].gettingData(self.state.firstname);
     formPersonal.field[2].gettingData(self.state.secondname);
@@ -94,13 +86,15 @@ class GeneralParameters extends Component {
   }
 
 //---Получаем наши роли с сервера и передаем их в переменную состояния rolesList
-	get_Data (){
+	get_Data (id){
 		  axios
-		    .get(`http://185.233.117.46/api/v1/user/5c191f5ba3eeef7ca2a1a5a7`)
+		    .get(`http://185.233.117.46/api/v1/user/${id}`)
 		    .then(function(response) {
 					this.setState({
 						rolesList: response.data.roles
 					})
+					// console.log('Our Selection' ,this.selection());
+
 				}.bind(this))				
 		    .catch(function(error) {
 		      console.log(error);
@@ -125,9 +119,9 @@ class GeneralParameters extends Component {
       function(response) {
         axios
           .put(
-            ` http://185.233.117.46/api/v1/user/5c1915572d048c48db8cbd64`,
+            ` http://185.233.117.46/api/v1/user/${userStore.getState().user}`,
             {
-              _id: "5c1915572d048c48db8cbd64",
+              _id: userStore.getState().user,
               userName: user.username,
               firstName: user.firstname,
               lastName: user.secondname,
@@ -142,32 +136,54 @@ class GeneralParameters extends Component {
           });
       }.bind(this)
     );
-  }
+	}
+	
   componentDidMount() {
+
     dates(userStore.getState().user, this);
-		this.get_Data();
+		this.get_Data(userStore.getState().user);
 		
     store.unsubscribe = store.subscribe(() => {
       this.saveChanges();
-    });
-
+		});
+		
+    dispListRolStore.unsubscribe = dispListRolStore.subscribe(() => {
+			this.setState(
+				this.state
+			)
+    });		
+		
     userStore.unsubscribe = userStore.subscribe(() => {
       changeUserInfo("edit", this);
-    });
-  }
+		});
+		
+    createUserStore.unsubscribe = createUserStore.subscribe(() => {
+      changeUserInfo("create", this);
+		});		
+	}
 
   componentWillUnmount() {
     store.unsubscribe();
     userStore.unsubscribe();
+    dispListRolStore.unsubscribe();
+    createUserStore.unsubscribe();
   }
 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
-  }
-  render() {
+	}
+	
+	
 
+  render() {
+	const dropdownListItem = (item) => (
+		<div className={styles.dropdownList_item}>
+			<p>{item}</p>
+			<div></div>
+		</div>
+	);
     return (
       <div className={styles.generalParameters}>
         <div className={styles.title}>
@@ -219,21 +235,18 @@ class GeneralParameters extends Component {
                     <i>&#10006; </i><span>Content Manager</span>
                   </section>
 									<input
+										onBlur={hide}
+										onChange={(e)=>{											
+											displayListRoles(e.target.value)
+										}}
                     type="text"
 										id="inputRoles"
 										className={styles.inputRoles}
                     placeholder="Select role"
                   />
-									<div id="dropdownList" className={styles.dropdownList}>
-								{
-										this.state.rolesList.map((item)=>(
-										<div className={styles.dropdownList_item}>
-											<p>{item}</p>
-											<div></div>
-										</div>
-										))
-									}
-									</div>
+									{ <div id="dropdownList" className={styles.dropdownList}>
+										{dispListRolStore.getState().result.map((item)=>(dropdownListItem(item)))}
+									</div>}
                 </div>
               </div>
               <div className={styles.group}>

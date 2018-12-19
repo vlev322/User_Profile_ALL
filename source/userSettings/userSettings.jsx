@@ -19,7 +19,7 @@ class UserSettings extends Component {
   }
 
   componentDidMount() {
-		this.dates("5c0a74613f088940a864da13", this);		
+		this.dates();		
 }
 
   dates() {
@@ -44,31 +44,10 @@ class UserSettings extends Component {
       <div className={styles.userSettings}>
 				<SectionBtn/>
 				<div className={styles.userSettingList}>
-					<UserSettingsList
-						user={userList}
-						nickname="User XXX"
-						name="Tom Toizer"
-						status="Active"
-						role="Content Manager"
-						location="Vilnus Airport"
-						lastLogin="2018-12-31 17:30:36"
-					/>				
+					<UserSettingsList	user={userList} />				
 				</div>
       </div>
-    ) : <div className={styles.userSettings}>
-		<SectionBtn/>
-		<div className={styles.userSettingList}>
-			<UserSettingsList
-				user={userList}
-				nickname="User XXX"
-				name="Tom Toizer"
-				status="Active"
-				role="Content Manager"
-				location="Vilnus Airport"
-				lastLogin="2018-12-31 17:30:36"
-			/>				
-		</div>
-	</div>;
+    ) : null;
   }
 }
 

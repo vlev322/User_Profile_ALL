@@ -8,10 +8,10 @@ import  { formPersonal,formContact }  from "../store/userProfileForm";
 
 
 const sendAndClose = () => {
+	formPersonal.store.toogleEditable();
+	formContact.store.toogleEditable();
 	store.save();
 	store.back();
-	formPersonal.store.toogleEditable()
-	formContact.store.toogleEditable()
 }
 const onlySave = () => {
 	store.save();

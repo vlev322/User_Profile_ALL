@@ -12,23 +12,31 @@ class UserSettingsListItem extends Component {
 		(this.state = {
 			active: false
 		}),
-		(this.select = this.select.bind(this))
+	//	(this.select = this.select.bind(this))
 		(this.choose = this.choose.bind(this))
 	}
 
+	changeInicate(){
+		this.setState({
+			active: !this.state.active
+		})
+	}	
 	select(){		
-		store.selectUser(this.props.id)
-	}
-	choose(){
-		userStore.chooseUser(this.props.id)
+		store.selectUser(this.props.id);
+		this.changeInicate();
+		console.log(store.getState());
 		
 	}
+	choose(){
+		userStore.chooseUser(this.props.id)		
+	}
+
 
 	 render() {
 			return (
 						<tr className={styles.userSettingsListItem}>
 							<td>
-							<div onClick={this.select} className={this.state.active ? `${styles.statusActive} ${styles.status}` : styles.status}></div>
+							<div onClick={this.select.bind(this)} className={this.state.active ? `${styles.statusActive} ${styles.status}` : styles.status}></div>
 							</td>
 							<td className={styles.username}>
 								<p onClick={this.choose}>{this.props.nickname}</p>

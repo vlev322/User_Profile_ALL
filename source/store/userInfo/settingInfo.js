@@ -32,21 +32,19 @@ export const store = createStore((state = initialState, action) => {
 			case 'SELECT_USER':				
 			return {
 					...state,
-					list: state.list.concat(
-						[
-							action.id
-						]
-					)
+					list: 
+						state.list.indexOf(action.id) == -1 ? // Проверка на то, есть ли такой элемент в массиве
+						state.list.concat([	action.id	]): // Если есть то добавляем к существующему							 
+						state.list.indexOf(action.id) >= 0 ? // При повторном нажатии, поверка на то, есть ли такой єлемент в массиве
+						state.list.filter(el => el !== action.id):	// Если есть то удаляем его из массива
+						[]		
 				};
 
-			case 'DELETE_USER':				
+			case 'DELETE_USER':							
 			return {
 					...state,
-					list: state.list.filter(
-						el => el !== action.id
-					)
+					deleteUser: true
 				};
-				
 		}
 		return state;
 	});
@@ -78,16 +76,15 @@ export const store = createStore((state = initialState, action) => {
 
 //---> Operations Select, Delete 
 	// Select User
-	store.selectUser = (id) => {		
+	store.selectUser = (id) => {	
 		store.dispatch({
 			type: 'SELECT_USER',
 			id
 		})
 	}
 	// Delete User
-	store.deleteUser = (id) => {		
+	store.deleteUser = () => {		
 		store.dispatch({
-			type: 'DELETE_USER',
-			id
+			type: 'DELETE_USER'
 		})
 	}
