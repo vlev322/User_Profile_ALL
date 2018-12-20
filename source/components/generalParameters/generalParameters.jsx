@@ -3,64 +3,18 @@ import React, { Component, Fragment } from "react";
 import axios from "axios";
 
 //Our stores
-import { formPersonal, formContact } from "./../store/userProfileForm";
-import { store } from "../store/userInfo/settingInfo";
-import { createUserStore } from "../store/userInfo/createUserStore";
-import { userStore } from "../store/userInfo/storeUser";
-import { displayListRoles, store as dispListRolStore, hide } from "../store/userInfo/dropdownStore";
+import { formPersonal, formContact } from "../../store/userProfileForm";
+import { store } from "../../store/userInfo/settingInfo";
+import { createUserStore } from "../../store/userInfo/createUserStore";
+import { userStore } from "../../store/userInfo/storeUser";
+import { displayListRoles, store as dispListRolStore, hide } from "../../store/userInfo/dropdownStore";
 //Our styles
 import styles from "./generalParameters.sass";
 //Our components
 import Field from "./field/field";
 import Title from "./title/title";
 
-const clear = self => {
-  self.setState({
-    username: "",
-    firstname: "",
-    secondname: "",
-    password: "",
-    email: "",
-    phone: "",
-    visitaddr: ""
-	});
-	
-};
-const changeUserInfo = (usersEdit, self) => {
-  if (usersEdit === "create") {
-		clear(self)		
-	}else if (usersEdit === "edit") {
-    formPersonal.field[0].gettingData(self.state.username);
-    formPersonal.field[1].gettingData(self.state.firstname);
-    formPersonal.field[2].gettingData(self.state.secondname);
-    formPersonal.field[3].gettingData(self.state.password);
-    formContact.field[0].gettingData(self.state.email);
-    formContact.field[1].gettingData(self.state.phone);
-  }
-};
-
-const dates = (userId, self) => {
-  axios
-    .get(`http://185.233.117.46/api/v1/user/${userId}`)
-    .then(function(response) {
-      const user = response.data;
-      self.setState({
-        username: user.userName,
-        firstname: user.firstName,
-        secondname: user.lastName,
-        password: user.password,
-        email: user.email,
-        phone: user.telephone,
-        visitaddr: user.visitingAdress
-      });
-    })
-    .then(() => {
-      changeUserInfo("edit", self);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-};
+import { dates,changeUserInfo, get_Data, saveChanges } from "../../controllers/gettinData";
 
 class GeneralParameters extends Component {
   constructor(props) {
@@ -77,74 +31,22 @@ class GeneralParameters extends Component {
 			rolesList: []
 			
     }),
-      (this.handleChange = this.handleChange.bind(this)),
-      (this.saveChanges = this.saveChanges.bind(this));
+      (this.handleChange = this.handleChange.bind(this))
+      // (this.saveChanges = this.saveChanges.bind(this));
   }
 
   handleSubmit(event) {
     event.preventDefault();
   }
 
-//---Получаем наши роли с сервера и передаем их в переменную состояния rolesList
-	get_Data (id){
-		  axios
-		    .get(`http://185.233.117.46/api/v1/user/${id}`)
-		    .then(function(response) {
-					this.setState({
-						rolesList: response.data.roles
-					})
-					// console.log('Our Selection' ,this.selection());
-
-				}.bind(this))				
-		    .catch(function(error) {
-		      console.log(error);
-		    });
-		};
-	
-  saveChanges() {
-    const user = {};
-    let saveData = () => {
-      return new Promise(function(resolve, reject) {
-        formPersonal.field.map(elem => {
-          user[elem.name] = elem.getState().value;
-        });
-        formContact.field.map(elem => {
-          user[elem.name] = elem.getState().value;
-        });
-        resolve("success");
-      });
-    };
-
-    saveData().then(
-      function(response) {
-        axios
-          .put(
-            ` http://185.233.117.46/api/v1/user/${userStore.getState().user}`,
-            {
-              _id: userStore.getState().user,
-              userName: user.username,
-              firstName: user.firstname,
-              lastName: user.secondname,
-              password: user.password,
-              email: user.email,
-              telephone: user.phone,
-              visitingAdress: user.visitingAdress
-            }
-          )
-          .catch(function(error) {
-            console.log(error);
-          });
-      }.bind(this)
-    );
-	}
-	
   componentDidMount() {
 
-    dates(userStore.getState().user, this);
-		this.get_Data(userStore.getState().user);
+		dates(userStore.getState().user, this);
+		
+		get_Data(userStore.getState().user, this);
 		
     store.unsubscribe = store.subscribe(() => {
-      this.saveChanges();
+      saveChanges(self);
 		});
 		
     dispListRolStore.unsubscribe = dispListRolStore.subscribe(() => {
@@ -154,11 +56,15 @@ class GeneralParameters extends Component {
     });		
 		
     userStore.unsubscribe = userStore.subscribe(() => {
-      changeUserInfo("edit", this);
+			changeUserInfo("edit", this);
+			console.log('SubscriBE---->>>> EDIT');
+			
 		});
 		
     createUserStore.unsubscribe = createUserStore.subscribe(() => {
-      changeUserInfo("create", this);
+			changeUserInfo("create", this);
+			console.log('SubscriBE---->>>> CREATE');
+			
 		});		
 	}
 
@@ -175,8 +81,6 @@ class GeneralParameters extends Component {
     });
 	}
 	
-	
-
   render() {
 	const dropdownListItem = (item) => (
 		<div className={styles.dropdownList_item}>
@@ -184,7 +88,7 @@ class GeneralParameters extends Component {
 			<div></div>
 		</div>
 	);
-    return (
+	  return (
       <div className={styles.generalParameters}>
         <div className={styles.title}>
           <h2>General Parameters</h2>

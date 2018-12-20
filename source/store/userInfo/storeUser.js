@@ -6,7 +6,6 @@ const initialState = {
 
 export const userStore = createStore((state = initialState, action) => {
 		switch (action.type) {
-
 			case 'CHOOSE_USER':				
 			return {
 					...state,

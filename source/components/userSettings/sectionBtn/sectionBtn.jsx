@@ -4,9 +4,9 @@ import axios from "axios";
 
 import styles from "./sectionBtn.sass";
 
-import { store } from "../../store/userInfo/settingInfo";
-import { deleted } from "../../store/userInfo/deleteUser";
-import { createUserStore } from "../../store/userInfo/createUserStore";
+import { store } from "../../../store/userInfo/settingInfo";
+import { deleted } from "../../../store/userInfo/deleteUser";
+import { createUserStore } from "../../../store/userInfo/createUserStore";
 
 
 const createUser = () => {
@@ -28,12 +28,11 @@ class UserSettings extends Component {
 	deleteObj (){
 		axios
 		.delete(
-			` http://185.233.117.46/api/v1/user/`,
+			` http://185.233.117.46/api/v1/users/`,
 			{
 				userDelete: store.getState().list
 			}
-		)				
-			.catch(function(error) {
+		).catch(function(error) {
 				console.log(error);
 			});
 	};
@@ -41,7 +40,7 @@ class UserSettings extends Component {
 	componentDidMount() {	
     deleted.unsubscribe = deleted.subscribe(() => {	
 					this.deleteObj();
-					console.log('We deleted it..', store.getState().list.lenght);
+					console.log('We deleted it..', store.getState().list.length);
 					
     });
   }

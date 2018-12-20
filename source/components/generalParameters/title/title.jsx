@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 //Our styles
 import styles from '../generalParameters.sass'
 //Our stores
-import { btnEditStore } from "../../store/userInfo/btnEditStore";
+import { btnEditStore } from "../../../store/userInfo/btnEditStore";
 class Title extends Component {
 	constructor(props) {
 		super(props);

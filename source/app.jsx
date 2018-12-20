@@ -2,10 +2,10 @@ import React, { Component, Fragment } from "react";
 
 import styles from "./styles/main.sass";
 
-import Header from "./header/header";
-import GeneralParameters from "./generalParameters/generalParameters";
-import Properties from "./properties/properties";
-import UserSettings from "./userSettings/userSettings";
+import Header from "./components/header/header";
+import GeneralParameters from "./components/generalParameters/generalParameters";
+import Properties from "./components/properties/properties";
+import UserSettings from "./components/userSettings/userSettings";
 
 import { store } from "./store/userInfo/settingInfo";
 
@@ -39,7 +39,6 @@ class App extends Component {
 			</Fragment>
 
 		let settings = <UserSettings />;
-
 			switch (page) {
 				case 'genParam':
 					return genParam;

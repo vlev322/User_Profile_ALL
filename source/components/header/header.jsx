@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 //Our styles
 import styles from './header.sass';
 //Our stores
-import { store } from "../store/userInfo/settingInfo";
-import { btnEditStore } from "../store/userInfo/btnEditStore";
-import  { formPersonal,formContact }  from "../store/userProfileForm";
+import { store } from "../../store/userInfo/settingInfo";
+import { btnEditStore } from "../../store/userInfo/btnEditStore";
+import  { formPersonal,formContact }  from "../../store/userProfileForm";
 
 
 const sendAndClose = () => {

@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 
 import styles from './userSettingsListItem.sass';
 
-import { store }from '../../../store/userInfo/settingInfo'
+import { store }from '../../../../store/userInfo/settingInfo'
 
-import { userStore }from '../../../store/userInfo/storeUser'
+import { userStore }from '../../../../store/userInfo/storeUser'
 
 class UserSettingsListItem extends Component {
 	constructor(props) {
@@ -15,18 +15,16 @@ class UserSettingsListItem extends Component {
 	//	(this.select = this.select.bind(this))
 		(this.choose = this.choose.bind(this))
 	}
-
-	changeInicate(){
+	changeIndicate(){
 		this.setState({
 			active: !this.state.active
 		})
 	}	
 	select(){		
 		store.selectUser(this.props.id);
-		this.changeInicate();
-		console.log(store.getState());
-		
+		this.changeIndicate();		
 	}
+
 	choose(){
 		userStore.chooseUser(this.props.id)		
 	}
@@ -40,7 +38,7 @@ class UserSettingsListItem extends Component {
 							</td>
 							<td className={styles.username}>
 								<p onClick={this.choose}>{this.props.nickname}</p>
-								<span>Name: {this.props.firstName} {this.props.lastName}</span>
+								<span onClick={this.choose}>Name: {this.props.firstName} {this.props.lastName}</span>
 							</td>
 							<td>
 								<div className={`${styles.status} ${styles.statusActive}`}></div>
