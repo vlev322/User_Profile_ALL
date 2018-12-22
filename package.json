@@ -4,7 +4,7 @@
   "description": "Boilerplate React application with Webpack, Babel and Sass.",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/webpack -p --mode production",
+    "build": "./node_modules/.bin/webpack -p --mode production --config ./webpack.config.js",
     "start": "./node_modules/.bin/webpack-dev-server --config ./webpack.config.js --mode development --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -48,6 +48,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "moment": "^2.23.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^6.0.0",

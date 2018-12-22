@@ -52,6 +52,16 @@ module.exports = {
         }
       },
       {
+        test: /\.(jpeg|png)$/,
+        exclude: /\/node_modules\//,
+        use: {
+          loader: "file-loader",
+          options: {
+            name: "style/img/[name].[ext]"
+          }
+        }
+      },
+      {
         test: /\.(html)$/,
         exclude: /node_modules/,
         use: {
