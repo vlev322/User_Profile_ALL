@@ -1,19 +1,24 @@
 import React, { Component } from "react";
 import moment from "moment";
 import styles from "./index.sass";
-
-const weekDays = () => {
-  let days = [];
-  for (let i = 1; i <= 7; ++i) {
-    days.push(
-      moment()
-        .isoWeekday(i)
-        .format("dd")
-    );
+//Получение одного месяца
+const month = month => {
+  month--;
+  let oneMonth = [];
+  let oneWeek = [];
+  for (const week in yearData()[month].weeks) {
+    for (const day in yearData()[month].weeks[week]) {
+      oneWeek.push(yearData()[month].weeks[week][day].date.getDate());
+    }
+    oneMonth.push(oneWeek);
+    oneWeek = [];
   }
-  return days;
+  while (oneMonth[0].length !== 7) {
+    oneMonth[0].unshift("");
+  }
+  return oneMonth;
 };
-
+//подучение одного года
 const yearData = () => {
   let data = [];
   for (let m = 0; m < 12; ++m) {
@@ -53,49 +58,39 @@ const yearData = () => {
 };
 
 export class Calendar extends Component {
+  componentDidMount() {
+    console.log(month(11));
+  }
   render() {
+    //----- Если нам нужно отобразить целый год то нужно воспользоватся циклом
+    // for (let i = 0; i < 12; i++) {
 
-//----- Если нам нужно отобразить целый год то нужно воспользоватся циклом
-		// for (let i = 0; i < 12; i++) {
+    //----- Если нам нужно отобразить только одну неделю то
+    //----- нужно воспользоватся переменной и на прямую передать значение месяца
+    //----- учесть, что месяца начинаются у нас с 0, поэтому
+    //----- последний месяц будет под номером 11
 
-//----- Если нам нужно отобразить только одну неделю то
-//----- нужно воспользоватся переменной и на прямую передать значение месяца
-//----- учесть, что месяца начинаются у нас с 0, поэтому
-//----- последний месяц будет под номером 11
-
-		let i = 11
-		console.log('<------------MONTH------------->', yearData()[i].title);		
-		Object.keys(yearData()[i].weeks).map((w)=>{
-			Object.keys(yearData()[i].weeks[w]).map((k)=>{
-				if (yearData()[i].weeks[w][k].date.getDay() === 0 || yearData()[i].weeks[w][k].date.getDay() === 6)
-					console.log(`######----->>>WEECKEND COMING--> ${yearData()[i].weeks[w][k].date.getDate()} ${moment().isoWeekday(yearData()[i].weeks[w][k].date.getDay()).format("dd")}`);
-				else
-				console.log(`weekdays--> ${yearData()[i].weeks[w][k].date.getDate()} ${moment().isoWeekday(yearData()[i].weeks[w][k].date.getDay()).format("dd")}`);
-			})
-		})
-//----- При разкоментировании цикла, не забыть эту скобочку
-		// }
+    // let i = 11
+    // console.log('<------------MONTH------------->', yearData()[i].title);
+    // Object.keys(yearData()[i].weeks).map((w)=>{
+    // 	Object.keys(yearData()[i].weeks[w]).map((k)=>{
+    // 		if (yearData()[i].weeks[w][k].date.getDay() === 0 || yearData()[i].weeks[w][k].date.getDay() === 6)
+    // 			console.log(`######----->>>WEECKEND COMING--> ${yearData()[i].weeks[w][k].date.getDate()} ${moment().isoWeekday(yearData()[i].weeks[w][k].date.getDay()).format("dd")}`);
+    // 		else
+    // 		console.log(`weekdays--> ${yearData()[i].weeks[w][k].date.getDate()} ${moment().isoWeekday(yearData()[i].weeks[w][k].date.getDay()).format("dd")}`);
+    // 	})
+    // })
+    //----- При разкоментировании цикла, не забыть эту скобочку
+    // }
 
     return (
       <div className={styles.wrapper}>
         <div className="main-title" />
         <div className="day_title" />
-        {/* {yearData()[0].weeks.map(week => (
-					week.map(day=>(
-						<div className="day">
-							<span>123dd</span>
-						</div>						
-					))
-        ))} */}
+
         <div className="month">
           <div className="title">{yearData()[8].title}</div>
-          <div className="month">
-            {/* {
-						yearData()[8].weeks.map((week, day)=>(
-							week[day+1].date.getDate()
-						))
-					} */}
-          </div>
+          <div className="month">{}</div>
           <div className="week">{}</div>
         </div>
       </div>
