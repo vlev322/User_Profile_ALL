@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './userSettingsList.sass';
 
 import UserSettingsListItem from './userSettingsListItem/userSettingsListItem';
+import RoleListItem from './roleListItem/roleListItem';
 
 const UserSettingsList = props => {
 		const {user} = props;
@@ -24,7 +25,7 @@ const UserSettingsList = props => {
 					<tbody>
 						{
 							user.map((item)=>(
-								<UserSettingsListItem
+								<RoleListItem
 									key={item._id}
 									id={item._id}
 									nickname={item.userName}

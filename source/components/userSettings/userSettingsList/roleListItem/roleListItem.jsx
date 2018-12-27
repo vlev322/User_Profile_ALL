@@ -37,23 +37,19 @@ class UserSettingsListItem extends Component {
 							<div onClick={this.select.bind(this)} className={this.state.active ? `${styles.statusActive} ${styles.status}` : styles.status}></div>
 							</td>
 							<td className={styles.username}>
-								<p onClick={this.choose}>{this.props.nickname}</p>
-								<span onClick={this.choose}>Name: {this.props.firstName} {this.props.lastName}</span>
+								<p>Role XXX</p>
 							</td>
 							<td>
-								<div className={`${styles.status} ${styles.statusActive}`}></div>
-								<span>{this.props.status}</span>
+							</td>							
+							<td className={styles.circles}>
+								<div className={styles.circles_item}><div>co</div></div>
+								<div className={styles.circles_item}><div>pl</div></div>
+								<div className={styles.circles_item}><div>ca</div></div>
+								<div className={styles.circles_item}><div>st</div></div>
+								<div className={styles.circles_item}><div>se</div></div>
 							</td>
+
 							<td>
-								<p>{this.props.location}</p>
-								<span>( 1 more.. )</span>
-							</td>
-							<td>
-								<p>{this.props.role}</p>
-								<span>( 2 more.. )</span>
-							</td>
-							<td>
-								{this.props.lastLogin}
 							</td>
 							<td>
 							<div className={`${styles.status} `}></div>
