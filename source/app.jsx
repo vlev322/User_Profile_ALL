@@ -6,6 +6,7 @@ import Header from "./components/header/header";
 import GeneralParameters from "./components/generalParameters/generalParameters";
 import Properties from "./components/properties/properties";
 import UserSettings from "./components/userSettings/userSettings";
+import Welcome from "./components/welcome-page";
 
 import { store } from "./store/userInfo/settingInfo";
 
@@ -67,7 +68,7 @@ class App extends Component {
   render() {		
     return (
       <Fragment>
-       	{this.changePage(this.state.pageName.pageName)}
+       	<Welcome></Welcome>
       </Fragment>
     );
   }

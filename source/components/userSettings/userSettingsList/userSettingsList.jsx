@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './userSettingsList.sass';
 
-import UserSettingsListItem from './userSettingsListItem/userSettingsListItem';
-import RoleListItem from './roleListItem/roleListItem';
+import UserSettingsListItem from './userSettingsListItem';
+import RoleListItem from './roleListItem/';
 
 const UserSettingsList = props => {
 		const {user} = props;
